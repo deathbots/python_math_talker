@@ -1,0 +1,77 @@
+# This is configuration for the math_talker.py file. Make a copy of this file and save as config.yml
+# It is a YAML syntax file, which means configuration options are space-sensitive.
+# If you alter an item, make sure its indentation level is a multiple of two spaces. You must never use tabs.
+
+# Do not alter the format of the file itself. Do not add sections.
+# Feel free to edit numbers, and edit or add strings to string lists. In YAML format, strings can be enclosed
+# in no quotes, single quotes, or double quotes.
+# To use a double quote inside a string, enclose the string with single quotes instead of double quotes.
+# To use a single quote inside a string, enclose the string with double quotes!
+# Quotes are not necessary at all, unless the string has other characters that are valid YAML tokens (like colon)
+# so be safe and use quotes. Bad strings will cause the program to not start, and you will get a helpful error
+# message with the line number.
+
+# Have fun editing and adding things to the list of sentences to say!
+
+# config section for tries
+tries:
+  # tryAgainTimes: 2
+  # the number of times allowed to try the same problem again until the answer is given.
+  # even if the answer is given, it will be asked later until they type the right answer in.
+  tryAgainTimes: 3
+  # tryUntilCertainTimes: 2
+  # the number of times a question is asked in the same session until it never asks that again in session.
+  # This may help memorize, but it would be annoying to ask the same question 10 times while you do all the others.
+  tryUntilCertainTimes: 2
+
+# This controls the speech engine
+speech:
+  # rate must be an integer
+  # rate: 150
+  rate: 190
+
+# The Strings sections below have messages randomly chosen from this list of strings. Use $NAME whenever the name
+# is to be said. Name is asked for at run time and substituted inside the program.
+
+
+# The greeting messages are before it asks for name. You therefore can't use $NAME in these strings. You can use $NAME
+# in all others.
+greetingMessages:
+# - "Hello. I am your computer and I love doing this stuff."
+- "Hello. I am your computer and I love doing this stuff."
+- "It's math time. I'm a computer. I want to help you."
+- "Yo, check it out. I'm a computer. I'm talkin. About math!"
+- "Get ready to have your mind blown. By a computer."
+
+
+# positive reinforcement. These are said 30% of the time a correct answer is given.
+successMessages:
+# - "Great job, $NAME"
+- "Great Job, $NAME"
+- "$NAME, you are getting this"
+- "You are really frying my circuits"
+- "$NAME is the human calculator"
+
+# Some encouragement. Try funny stuff here so they don't take this too seriously. Failure doesn't feel good.
+failureMessages:
+# - "Don't worry $NAME, I know math but I can't even sing"
+- "Don't worry $NAME, I know math but I can't even sing"
+- "I know you'll get that one later"
+- "Please keep trying, I am sure you can do it"
+
+
+
+# When all problems are completed.
+victoryMessages:
+# - "You won, $NAME"
+- "You won, $NAME"
+- "$NAME, you are the greatest"
+
+# When all problems are completed or rewardIfCorrect count is met, allow X sentences to be typed and spoken back
+# Kids like to make computers talk to them.
+reward:
+  rewardMessage: "Since you have defeated me, I will now say anything you tell me to, a few times."
+  # alter this value to control how many times you can make the computer say something.
+  speechCount: 5
+  # alter this value to take a mini reward break - allowing only one sentence to be typed - every X answers
+  rewardIfCorrect: 10
