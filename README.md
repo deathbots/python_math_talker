@@ -12,7 +12,7 @@ This really is a silly program, but maybe you'll find it helpful.
 Editing the config file to add your own sayings is the most fun part!
 
 Requirements:
-Python 2.7 or Python 3. However, Python 3 does not work properly with the text to speech engine, so it's not nearly as much fun.
+Python 2.7 or Python 3. 
 
 
 To install requirements for python
