@@ -8,9 +8,9 @@ import yaml
 import os
 import argparse
 import six
+import sys
 
-if six.PY2:
-    import pyttsx
+import pyttsx3 as pyttsx
 
 # FIX raw input not avail in py3
 try:
@@ -24,11 +24,6 @@ NAME = 'unknown person'
 CONF = None
 quiet_mode = False
 chosen_probs_list = []
-
-
-# what you should do is calculate the multiplication, and then reverse numbers.
-# check result against the div.
-# allow the rate to be slowed down and then re-increased
 
 
 def is_probably_true(chance_percentage):
@@ -365,7 +360,10 @@ def run_and_loop(min, max, restrict, prob_type):
                 else:
                     prob.say_problem(one, two)
                 say(CONF.random_success, 30)
-                _ = os.system("cls")
+                if sys.platform == 'win32':
+                    _ = os.system("cls")
+                else:
+                    _ = os.system('clear')
                 answer_count_f += 1
                 good_answers[key_f] = answer_count_f
                 answer_count_b += 1
@@ -376,6 +374,18 @@ def run_and_loop(min, max, restrict, prob_type):
                       .format(CONF.tries_before_giving_answer - try_again_count - 1))
                 try_again_count += 1
                 correct = prob.ask_problem(one, two)
+
+
+def get_random_voice(engine, locale_prefix='en'):
+
+    def has_locale_prefix(voice, prefix):
+        for lang in voice.languages:
+            if lang.lower().startswith(prefix):
+                return True
+        return False
+
+    english_voices = [v for v in engine.getProperty('voices') if has_locale_prefix(v, locale_prefix)]
+    return random.choice(english_voices)
 
 
 def parse_args():
@@ -392,22 +402,25 @@ if __name__ == "__main__":
     if quiet_mode:
         print('Quiet mode enabled. No talking!')
     engine = None
-    if six.PY3:
-        if not quiet_mode:
-            print("I am sorry, but the text to speech engine will not work in Python 3. Try Python2.7 instead.")
-            quiet_mode = True
     if not quiet_mode:
         engine = pyttsx.init()
-        engine.setProperty('voice', "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0")
+        voice = get_random_voice(engine)
+        engine.setProperty('voice', voice.id)
+        engine.say('Hello from "{}"'.format(voice.name))
+        engine.runAndWait()
+
     try:
         CONF = Config(CONF_PATH, engine, quiet_mode)
     except yaml.YAMLError as e:
         print("Could not load config file at {}, {}".format(CONF_PATH, str(e)))
+        sys.exit(1)
     except RuntimeError as e:
         print("Config file at {} was not properly formatted, {}".format(CONF_PATH, str(e)))
+        sys.exit(1)
     except (OSError, IOError) as e:
         print("Config file at {} was not found, {}".format(CONF_PATH, str(e)))
         print("Did you forget to copy config_example.yml to config.yml?")
+        sys.exit(1)
     while True:
         min, max, restrict, prob_type = get_range()
         run_and_loop(min, max, restrict, prob_type)

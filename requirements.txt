@@ -1,3 +1,4 @@
 pyyaml
-pyttsx
+pyttsx3
 six
+pyobjc; sys.platform == 'darwin'
